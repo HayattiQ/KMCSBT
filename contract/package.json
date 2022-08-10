@@ -1,0 +1,26 @@
+{
+  "name": "contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "hardhat compile",
+    "dev": "hardhat node",
+    "flatten": "poa-solidity-flattener ./contracts/*",
+    "lint:eslint": "eslint . --ext ts,tsx",
+    "format": "prettier --write .",
+    "fix:eslint": "eslint . --ext ts,tsx --fix"
+  },
+  "keywords": [],
+  "author": "HayattiQ",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "@poanet/solidity-flattener": "^3.0.7",
+    "dotenv": "^16.0.0",
+    "readline": "^1.3.0"
+  },
+  "devDependencies": {
+    "erc721a": "^4.2.0"
+  }
+}
