@@ -4,10 +4,9 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "hardhat/console.sol";
+import {Operable} from "./Operable.sol";
 
-
-contract KMCSBT is ERC1155URIStorage, Ownable {
+contract KMCSBT is ERC1155URIStorage, Ownable, Operable {
 	using Strings for string;
 
 	string public name = "Kawaii Meta Collage SBT";
@@ -15,7 +14,7 @@ contract KMCSBT is ERC1155URIStorage, Ownable {
   mapping (address => bool) bondedAddress;
 
 	constructor() ERC1155("") {
-
+	  _grantOperatorRole(msg.sender);
 	}
 
 	function setApprovalForAll(address /* operator */, bool /* approved */) public virtual override {
@@ -26,30 +25,30 @@ contract KMCSBT is ERC1155URIStorage, Ownable {
      return bondedAddress[to];
 	}
 
-	function bound(address to, bool flag) public onlyOwner {
+	function bound(address to, bool flag) public onlyOperator {
     bondedAddress[to] = flag;
   }
 
-	function setBaseURI(string memory uri_) external onlyOwner {
+	function setBaseURI(string memory uri_) external onlyOperator {
 		_setBaseURI(uri_);
 	}
 
-	function setTokenURI(uint256 tokenId, string memory _tokenURI) external onlyOwner {
+	function setTokenURI(uint256 tokenId, string memory _tokenURI) external onlyOperator {
 		_setURI(tokenId, _tokenURI);
 	}
 
-	function initializeSBT(uint256 tokenId, string memory _tokenURI) public onlyOwner {
+	function initializeSBT(uint256 tokenId, string memory _tokenURI) public onlyOperator {
 		require(bytes(uri(tokenId)).length == 0, "SBT already exists");
 		_mint(msg.sender, tokenId, 1, "");
 		_setURI(tokenId, _tokenURI);
 	}
 
-	function mint(address to, uint256 id, uint256 amount) public onlyOwner {
+	function mint(address to, uint256 id, uint256 amount) public onlyOperator {
 		require(bytes(uri(id)).length != 0, "Not initialized");
 		_mint(to, id, amount, "");
 	}
 
-	function burn(address to, uint256 id, uint256 amount) public onlyOwner {
+	function burnAdmin(address to, uint256 id, uint256 amount) public onlyOperator {
 		_burn(to, id, amount);
 	}
 
@@ -61,12 +60,22 @@ contract KMCSBT is ERC1155URIStorage, Ownable {
 		uint256[] memory amounts,
 		bytes memory data
 	) internal virtual override {
-		console.log("tokentransfer", operator,from,to,ids,amounts,data);
 
-		if (operator != owner() || bondedAddress[operator] == false) {
+		if (operator != owner() && bondedAddress[operator] == false) {
 			revert("Sending not allowed");
 		}
 		super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
 	}
+
+    /**
+        @dev Operable Role
+     */
+    function grantOperatorRole(address _candidate) external onlyOwner {
+        _grantOperatorRole(_candidate);
+    }
+
+    function revokeOperatorRole(address _candidate) external onlyOwner {
+        _grantOperatorRole(_candidate);
+    }
 
 }
