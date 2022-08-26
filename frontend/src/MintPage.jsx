@@ -73,9 +73,9 @@ const Mint = () => {
   const dispatch = useDispatch()
   const blockchain = useSelector((state) => state.blockchain)
   const data = useSelector((state) => state.data)
-  const [merkle, setMerkle] = useState([])
   const [claimingNft, setClaimingNft] = useState(false)
-  const [feedback, setFeedback] = useState(`Click buy to mint your NFT.`)
+  const [merkle, setMerkle] = useState([])
+  const [feedback, setFeedback] = useState()
   const [mintAmount, setMintAmount] = useState(1)
   const [CONFIG, SET_CONFIG] = useState({
     CONTRACT_ADDRESS: '',
@@ -88,7 +88,6 @@ const Mint = () => {
     NFT_NAME: '',
     SYMBOL: '',
     MAX_SUPPLY: 1,
-    GAS_LIMIT: 0,
     MARKETPLACE: '',
     MARKETPLACE_LINK: '',
   })
@@ -100,15 +99,14 @@ const Mint = () => {
 
   const claimNFTs = () => {
     let cost = data.cost
-    let gasLimit = CONFIG.GAS_LIMIT
     let method = null
     let totalCostWei = new BN(cost.toString()).muln(mintAmount)
-    let totalGasLimit = String(gasLimit * mintAmount)
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
     setClaimingNft(true)
     if (data.presale) {
       method = blockchain.smartContract.methods.preMint(
         mintAmount,
+        merkle.presaleMax,
         merkle.hexProof
       )
     } else {
@@ -116,7 +114,6 @@ const Mint = () => {
     }
     method
       .send({
-        gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
         from: blockchain.account,
         value: totalCostWei,
@@ -129,8 +126,22 @@ const Mint = () => {
       .then((receipt) => {
         console.log(receipt)
         setFeedback(
-          `WOW, the ${CONFIG.NFT_NAME} is yours! go visit ${CONFIG.MARKETPLACE} to view it.`
+          <React.Fragment>
+            <div style={{ color: 'var(--secondary)' }}>
+              You successfully minted NFT
+            </div>
+            <div>
+              <a
+                target={'_blank'}
+                style={{ color: 'var(--secondary)' }}
+                href={'https://opensea.io/collection/wastestinnyc'}
+              >
+                https://opensea.io/collection/wastestinnyc
+              </a>
+            </div>
+          </React.Fragment>
         )
+
         setClaimingNft(false)
         dispatch(fetchData(blockchain.account))
       })
@@ -146,7 +157,7 @@ const Mint = () => {
 
   const incrementMintAmount = () => {
     const MAX_MINT_AMOUNT = data.presale
-      ? CONFIG.MAX_MINT_AMOUNT_PRE
+      ? merkle.presaleMax
       : CONFIG.MAX_MINT_AMOUNT_PUBLIC
     let newMintAmount = mintAmount + 1
     if (newMintAmount > MAX_MINT_AMOUNT) {
@@ -160,6 +171,7 @@ const Mint = () => {
       dispatch(fetchData(blockchain.account))
     }
   }
+
   const getMerkleData = (account) => {
     fetch('/.netlify/functions/merkletree?address=' + account)
       .then((res) => res.json())
@@ -246,7 +258,7 @@ const Mint = () => {
             color: 'var(--accent-text)',
           }}
         >
-          Your address don't eligible WhiteList
+          Your address is not allow listed
         </s.TextDescription>
       )
     }
@@ -270,7 +282,7 @@ const Mint = () => {
         <s.TextTitle
           style={{ textAlign: 'center', color: 'var(--accent-text)' }}
         >
-          1 {CONFIG.SYMBOL} costs {data.displayCost} {CONFIG.NETWORK.SYMBOL}.
+          1 NFT costs {data.displayCost} {CONFIG.NETWORK.SYMBOL}.
         </s.TextTitle>
         <s.TextDescription
           style={{ textAlign: 'center', color: 'var(--accent-text)' }}
@@ -278,7 +290,16 @@ const Mint = () => {
           {data.presale ? 'PRESALE LIVE!' : 'PUBLIC SALE LIVE!'}
         </s.TextDescription>
         <s.SpacerSmall />
-
+        {data.presale && (
+          <s.TextTitle
+            style={{
+              textAlign: 'center',
+              color: 'var(--accent-text)',
+            }}
+          >
+            You can mint {merkle.presaleMax} NFT
+          </s.TextTitle>
+        )}
         <s.TextDescription
           style={{
             textAlign: 'center',
@@ -321,7 +342,15 @@ const Mint = () => {
         </s.Container>
         <s.SpacerSmall />
         <s.Container ai={'center'} jc={'center'} fd={'row'}>
-          {data.cost ? <BuyButton /> : <div color="#FFFFFF">Loading</div>}
+          {!data.paused ? (
+            data.cost ? (
+              <BuyButton />
+            ) : (
+              <div style={{ color: 'white' }}>Loading</div>
+            )
+          ) : (
+            <div style={{ color: 'white' }}>Mint is paused</div>
+          )}
         </s.Container>
       </>
     )
@@ -356,11 +385,11 @@ const Mint = () => {
         <s.TextTitle
           style={{
             textAlign: 'center',
-            color: 'var(--secondary)',
+            color: 'white',
           }}
         >
-          Mintlist sale: TBA <br />
-          Public sale: TBA JST
+          Allow list sale: 8/20 10:00[JST] <br />
+          Public sale: 8/21 10:00[JST]
         </s.TextTitle>
         <s.SpacerSmall />
         <s.TextTitle
@@ -376,10 +405,14 @@ const Mint = () => {
         <s.TextDescription
           style={{
             textAlign: 'center',
-            color: 'var(--primary-text)',
+            color: 'white',
           }}
         >
-          <StyledLink target={'_blank'} href={CONFIG.SCAN_LINK}>
+          <StyledLink
+            style={{ color: 'white' }}
+            target={'_blank'}
+            href={CONFIG.SCAN_LINK}
+          >
             {truncate(CONFIG.CONTRACT_ADDRESS, 15)}
           </StyledLink>
         </s.TextDescription>
@@ -407,26 +440,13 @@ const Mint = () => {
       <s.Container>
         <s.TextDescription
           style={{
-            textAlign: 'left',
-            color: 'var(--accent)',
-          }}
-        >
-          Pre/Public Price: 0.01ETH
-          <br />
-          WhiteList Max: 10 NFTs per address
-          <br />
-          Public Max: 10 NFTs per Transaction
-        </s.TextDescription>
-        <s.SpacerMedium />
-        <s.TextDescription
-          style={{
-            textAlign: 'left',
-            color: 'var(--accent)',
+            textAlign: 'center',
+            color: 'black',
           }}
         >
           Please make sure you are connected to the right network (
           {CONFIG.NETWORK.NAME}) and the correct address. Please note: Once you
-          make the purchase, you cannot undo this action.
+          make the purchase, you cannot undo this action!
         </s.TextDescription>
         <s.SpacerLarge />
       </s.Container>

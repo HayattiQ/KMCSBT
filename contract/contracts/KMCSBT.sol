@@ -17,8 +17,9 @@ contract KMCSBT is ERC1155URIStorage, Ownable, Operable {
 	  _grantOperatorRole(msg.sender);
 	}
 
-	function setApprovalForAll(address /* operator */, bool /* approved */) public virtual override {
-		revert("Cannot approve, transferring not allowed");
+	function setApprovalForAll(address operator, bool approved ) public virtual override {
+	  require(operator == owner() || bondedAddress[operator] == true,"Cannot approve, transferring not allowed");
+		_setApprovalForAll(_msgSender(), operator, approved);
 	}
 
   function locked(address to) external view returns (bool){

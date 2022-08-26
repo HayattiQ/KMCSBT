@@ -1,21 +1,19 @@
 {
-  "CONTRACT_ADDRESS": "0x807cdaf7EfDFB9834CEc8b09EE6F464e3FBd8Dd0",
-  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x807cdaf7EfDFB9834CEc8b09EE6F464e3FBd8Dd0",
+  "CONTRACT_ADDRESS": "0x50FCB8d7abD072193A50Ee192F37F73cF42150E0",
+  "SCAN_LINK": "https://etherscan.io/address/0x50FCB8d7abD072193A50Ee192F37F73cF42150E0",
   "NETWORK": {
-    "NAME": "Rinkeby",
+    "NAME": "Ethereum",
     "SYMBOL": "ETH",
-    "ID": 4,
+    "ID": 1,
     "DECIMALS": 18,
-    "RPC_URL": "https://eth-rinkeby.alchemyapi.io/v2/WG68WJV_dEDvQY7Lnyt5ZxwK6FBCEHLJ",
-    "BLOCK_EXPLORER_URL": "https://rinkeby.etherscan.io/"
+    "RPC_URL": "https://eth-mainnet.g.alchemy.com/v2/Peofv0-31TJjEYH8jPmOnFjRXtCdjMZ5",
+    "BLOCK_EXPLORER_URL": "https://etherscan.io/"
   },
-  "NFT_NAME": "NFTBoilMerkle",
-  "SYMBOL": "BOIL",
-  "MAX_SUPPLY": 7000,
-  "GAS_LIMIT": 200000,
+  "NFT_NAME": "WasteStinNYC",
+  "SYMBOL": "WASTE",
+  "MAX_SUPPLY": 300,
   "PAUSED": false,
   "MARKETPLACE": "OpenSea",
-  "MARKETPLACE_LINK": "https://opensea.io/",
-  "MAX_MINT_AMOUNT_PRE": 5,
-  "MAX_MINT_AMOUNT_PUBLIC": 10
+  "MARKETPLACE_LINK": "https://opensea.io/collection/wastestinnyc",
+  "MAX_MINT_AMOUNT_PUBLIC": 2
 }
