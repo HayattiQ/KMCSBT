@@ -1,19 +1,19 @@
 {
-  "CONTRACT_ADDRESS": "0x50FCB8d7abD072193A50Ee192F37F73cF42150E0",
-  "SCAN_LINK": "https://etherscan.io/address/0x50FCB8d7abD072193A50Ee192F37F73cF42150E0",
+  "CONTRACT_ADDRESS": "0xd136C9AF4DC6D04885c18202A8B1736a46e2957c",
+  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0xd136C9AF4DC6D04885c18202A8B1736a46e2957c",
   "NETWORK": {
-    "NAME": "Ethereum",
+    "NAME": "Rinkeby",
     "SYMBOL": "ETH",
-    "ID": 1,
+    "ID": 4,
     "DECIMALS": 18,
-    "RPC_URL": "https://eth-mainnet.g.alchemy.com/v2/Peofv0-31TJjEYH8jPmOnFjRXtCdjMZ5",
-    "BLOCK_EXPLORER_URL": "https://etherscan.io/"
+    "RPC_URL": "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+    "BLOCK_EXPLORER_URL": "https://rinkeby.etherscan.io/"
   },
-  "NFT_NAME": "WasteStinNYC",
-  "SYMBOL": "WASTE",
-  "MAX_SUPPLY": 300,
+  "NFT_NAME": "KMCSelect",
+  "SYMBOL": "KMCS",
+  "MAX_SUPPLY": 7000,
   "PAUSED": false,
   "MARKETPLACE": "OpenSea",
-  "MARKETPLACE_LINK": "https://opensea.io/collection/wastestinnyc",
+  "MARKETPLACE_LINK": "https://opensea.io/collection/kmcselect",
   "MAX_MINT_AMOUNT_PUBLIC": 2
 }

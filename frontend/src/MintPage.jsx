@@ -98,25 +98,18 @@ const Mint = () => {
   })
 
   const claimNFTs = () => {
-    let cost = data.cost
     let method = null
-    let totalCostWei = new BN(cost.toString()).muln(mintAmount)
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
     setClaimingNft(true)
-    if (data.presale) {
-      method = blockchain.smartContract.methods.preMint(
-        mintAmount,
-        merkle.presaleMax,
-        merkle.hexProof
-      )
-    } else {
-      method = blockchain.smartContract.methods.publicMint(mintAmount)
-    }
+    method = blockchain.smartContract.methods.preMint(
+      mintAmount,
+      merkle.presaleMax,
+      merkle.hexProof
+    )
     method
       .send({
         to: CONFIG.CONTRACT_ADDRESS,
         from: blockchain.account,
-        value: totalCostWei,
       })
       .once('error', (err) => {
         console.log(err)
@@ -156,9 +149,7 @@ const Mint = () => {
   }
 
   const incrementMintAmount = () => {
-    const MAX_MINT_AMOUNT = data.presale
-      ? merkle.presaleMax
-      : CONFIG.MAX_MINT_AMOUNT_PUBLIC
+    const MAX_MINT_AMOUNT = merkle.presaleMax
     let newMintAmount = mintAmount + 1
     if (newMintAmount > MAX_MINT_AMOUNT) {
       newMintAmount = MAX_MINT_AMOUNT
@@ -250,7 +241,7 @@ const Mint = () => {
   }
 
   const BuyButton = () => {
-    if (data.presale && !merkle['hexProof']) {
+    if (!merkle['hexProof']) {
       return (
         <s.TextDescription
           style={{
@@ -279,15 +270,10 @@ const Mint = () => {
   const AftarConnect = () => {
     return (
       <>
-        <s.TextTitle
-          style={{ textAlign: 'center', color: 'var(--accent-text)' }}
-        >
-          1 NFT costs {data.displayCost} {CONFIG.NETWORK.SYMBOL}.
-        </s.TextTitle>
         <s.TextDescription
           style={{ textAlign: 'center', color: 'var(--accent-text)' }}
         >
-          {data.presale ? 'PRESALE LIVE!' : 'PUBLIC SALE LIVE!'}
+          MINT LIVE!
         </s.TextDescription>
         <s.SpacerSmall />
         {data.presale && (
@@ -343,7 +329,7 @@ const Mint = () => {
         <s.SpacerSmall />
         <s.Container ai={'center'} jc={'center'} fd={'row'}>
           {!data.paused ? (
-            data.cost ? (
+            data.mintable ? (
               <BuyButton />
             ) : (
               <div style={{ color: 'white' }}>Loading</div>
@@ -388,19 +374,8 @@ const Mint = () => {
             color: 'white',
           }}
         >
-          Allow list sale: 8/20 10:00[JST] <br />
-          Public sale: 8/21 10:00[JST]
-        </s.TextTitle>
-        <s.SpacerSmall />
-        <s.TextTitle
-          style={{
-            textAlign: 'center',
-            fontSize: 50,
-            fontWeight: 'bold',
-            color: 'var(--accent-text)',
-          }}
-        >
-          {data.totalSupply} / {CONFIG.MAX_SUPPLY}
+          Mint Date: 8/31 19:00 - 21:00 <br />
+          WhiteList Mint Only
         </s.TextTitle>
         <s.TextDescription
           style={{

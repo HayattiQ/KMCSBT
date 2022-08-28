@@ -26,28 +26,14 @@ export const fetchData = () => {
   return async (dispatch) => {
     dispatch(fetchDataRequest())
     try {
-      let totalSupply = await store
+      const mintable = await store
         .getState()
-        .blockchain.smartContract.methods.totalSupply()
-        .call()
-
-      const cost = await store
-        .getState()
-        .blockchain.smartContract.methods.getCurrentCost()
-        .call()
-      const display_cost = web3.utils.fromWei(cost, 'ether')
-
-      const presale = await store
-        .getState()
-        .blockchain.smartContract.methods.presale()
+        .blockchain.smartContract.methods.mintable()
         .call()
 
       dispatch(
         fetchDataSuccess({
-          totalSupply,
-          cost,
-          display_cost,
-          presale,
+          mintable,
         })
       )
     } catch (err) {

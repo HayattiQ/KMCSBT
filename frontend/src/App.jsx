@@ -6,11 +6,10 @@ function App() {
   return (
     <div className="background">
       <div className="container">
-        <img className="headerImage" src="/config/images/logo-win.jpg" />
+        <img className="headerImage" src="/config/images/logo-win.png" />
         <div id="mintContainer">
           <MintPage />
         </div>
-        <img className="footerImage" src="/config/images/mago-logo.jpg" />
       </div>
     </div>
   )
