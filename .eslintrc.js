@@ -11,7 +11,7 @@ module.exports = {
     sourceType: 'module',
   },
 
-  ignorePatterns: ['frontend/src/**'],
+  ignorePatterns: ['frontend/src/**', 'interactive/**'],
   plugins: ['@typescript-eslint'],
   rules: {},
 }
