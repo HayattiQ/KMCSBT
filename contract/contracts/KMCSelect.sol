@@ -82,6 +82,15 @@ contract KMCSelect is ERC1155PresetMinterPauser {
        _baseURI = _newBaseURI;
     }
 
+
+    /**
+     * @notice Set the merkle root for the allow list mint
+     */
+    function setMerkleRoot(bytes32 _merkleRoot) external onlyRole(MINTER_ROLE) {
+        merkleRoot = _merkleRoot;
+    }
+
+
     function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
         Address.sendValue(payable(msg.sender), address(this).balance);
     }
