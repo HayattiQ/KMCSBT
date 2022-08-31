@@ -19,6 +19,7 @@ describe(`${testConfig.contract_name} contract`, function () {
     const contract = await ethers.getContractFactory(testConfig.contract_name)
     ad = (await contract.deploy()) as KMCSelect
     await ad.deployed()
+    await ad.setMintable(true)
   })
 
   describe('Whitelist checks', function () {
@@ -55,6 +56,20 @@ describe(`${testConfig.contract_name} contract`, function () {
         'Transfer'
       )
     })
+
+    it('PreSale token URL is normal one', async function () {
+      expect(await ad.connect(alis).preMint(1, 3, hexProofs[1])).to.be.ok
+      expect(await ad.connect(alis).balanceOf(alis.address, 0)).to.equal(1)
+      expect(await ad.connect(alis).balanceOf(alis.address, 1)).to.equal(0)
+      expect(await ad.connect(alis).balanceOf(alis.address, 2)).to.equal(0)
+
+      await ad.setMintPhase(1)
+      expect(await ad.connect(alis).preMint(2, 3, hexProofs[1])).to.be.ok
+      expect(await ad.connect(alis).balanceOf(alis.address, 0)).to.equal(1)
+      expect(await ad.connect(alis).balanceOf(alis.address, 1)).to.equal(2)
+      expect(await ad.connect(alis).balanceOf(alis.address, 2)).to.equal(0)
+    })
+
     it('Non Whitelisted user cant buy on PreSale', async function () {
       await expect(ad.connect(bob).preMint(1, 2, hexProofs[0])).to.be.ok
 
@@ -82,11 +97,19 @@ describe(`${testConfig.contract_name} contract`, function () {
 
     it('Whitelisted fails to mints when paused', async () => {
       await ad.pause()
-
       await expect(
         ad.connect(alis).preMint(1, 3, hexProofs[1])
       ).to.revertedWith('Pausable: paused')
       await ad.unpause()
+      expect(await ad.connect(bob).preMint(1, 2, hexProofs[0])).to.be.ok
+    })
+
+    it('Whitelisted fails to mints when not mintable', async () => {
+      await ad.setMintable(false)
+      await expect(
+        ad.connect(alis).preMint(1, 3, hexProofs[1])
+      ).to.revertedWith('Mintable: paused')
+      await ad.setMintable(true)
       expect(await ad.connect(bob).preMint(1, 2, hexProofs[0])).to.be.ok
     })
 

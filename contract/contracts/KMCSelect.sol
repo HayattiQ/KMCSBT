@@ -16,10 +16,8 @@ contract KMCSelect is ERC1155PresetMinterPauser {
     }
 
     TicketID public mintPhase = TicketID.Normal;
-    uint256 public maxMint = 7000;
-    uint256 public mintCount = 0;
-    bool public mintable = true;
-    string private _baseURI = "ar://03k7wHcwYrb8-yd0DOJH116f4MB6Mcat8P3vIQRH9a4/";
+    bool public mintable = false;
+    string private _baseURI = "ar://nnXgxVTwutWgJg7KaRDLwUsjiGrF33vVs6CTNFvSGR0/";
 
     string constant public name = "KMCSelect";
     string constant public symbol = "KMCS";
@@ -35,14 +33,6 @@ contract KMCSelect is ERC1155PresetMinterPauser {
 
     modifier whenMintable() {
         require(mintable == true, "Mintable: paused");
-        _;
-    }
-
-    /**
-     * @dev The modifier allowing the function access only for real humans.
-     */
-    modifier callerIsUser() {
-        require(tx.origin == msg.sender, "The caller is another contract");
         _;
     }
 
@@ -64,6 +54,7 @@ contract KMCSelect is ERC1155PresetMinterPauser {
         );
 
         _mint(msg.sender, uint(mintPhase), _mintAmount, "");
+        whiteListClaimed[msg.sender] += _mintAmount ;
     }
 
     function setMintable(bool _state) public onlyRole(MINTER_ROLE) {
@@ -74,14 +65,9 @@ contract KMCSelect is ERC1155PresetMinterPauser {
         mintPhase = _id;
     }
 
-    function setMaxMint(uint256 _count) public onlyRole(MINTER_ROLE) {
-        maxMint = _count;
-    }
-
     function setBaseURI(string memory _newBaseURI) public onlyRole(MINTER_ROLE) {
        _baseURI = _newBaseURI;
     }
-
 
     /**
      * @notice Set the merkle root for the allow list mint
