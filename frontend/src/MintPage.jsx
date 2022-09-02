@@ -370,7 +370,7 @@ const Mint = () => {
             color: 'white',
           }}
         >
-          Mint Date: 8/31 20:00 - 22:00 <br />
+          Mint Date: 9/2 20:00 - 22:00 <br />
           WhiteList Mint Only
         </s.TextTitle>
         <s.TextDescription
