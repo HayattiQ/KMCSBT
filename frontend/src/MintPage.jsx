@@ -127,9 +127,9 @@ const Mint = () => {
               <a
                 target={'_blank'}
                 style={{ color: 'var(--secondary)' }}
-                href={'https://opensea.io/collection/wastestinnyc'}
+                href={'https://opensea.io/collection/kmcselect'}
               >
-                https://opensea.io/collection/wastestinnyc
+                https://opensea.io/collection/kmcselect
               </a>
             </div>
           </React.Fragment>
@@ -328,14 +328,10 @@ const Mint = () => {
         </s.Container>
         <s.SpacerSmall />
         <s.Container ai={'center'} jc={'center'} fd={'row'}>
-          {!data.paused ? (
-            data.mintable ? (
-              <BuyButton />
-            ) : (
-              <div style={{ color: 'white' }}>Loading</div>
-            )
+          {data.mintable ? (
+            <BuyButton />
           ) : (
-            <div style={{ color: 'white' }}>Mint is paused</div>
+            <div style={{ color: 'white' }}>Mint is stop now</div>
           )}
         </s.Container>
       </>
@@ -374,7 +370,7 @@ const Mint = () => {
             color: 'white',
           }}
         >
-          Mint Date: 8/31 19:00 - 21:00 <br />
+          Mint Date: 8/31 20:00 - 22:00 <br />
           WhiteList Mint Only
         </s.TextTitle>
         <s.TextDescription
