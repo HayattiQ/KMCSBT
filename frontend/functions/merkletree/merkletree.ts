@@ -56,7 +56,7 @@ export const handler: Handler = async (event, context) => {
   }
 }
 const addressList: [string, number][] = [
-  ['0xCDE6CcA4D309E14fe8658be19bE9FEe6AAAb6ace', 1],
+  ['0x813C6726e40CBCdFF33d27324b9AE77a4e4d43FD', 1],
   ['0xec294eBa47f2a90Da8C05b4c3b3D3B57CACD37C6', 1],
   ['0x083f14959d637cf789497B6aFE476a1E3057F8AF', 1],
   ['0x3d3B69457Ce7e7998f19e85E018B5a296Aed781e', 1],
