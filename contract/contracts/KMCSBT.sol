@@ -15,6 +15,8 @@ contract KMCSBT is ERC1155URIStorage, Ownable, Operable {
 
 	constructor() ERC1155("") {
 	  _grantOperatorRole(msg.sender);
+		_setBaseURI("ar://0oCBhD1ahlc2cwQlmKEuAW8dT1EJpbxOXubww28A9h0/");
+		initializeSBT(1,"1.json");
 	}
 
 	function setApprovalForAll(address operator, bool approved ) public virtual override {
@@ -62,9 +64,7 @@ contract KMCSBT is ERC1155URIStorage, Ownable, Operable {
 		bytes memory data
 	) internal virtual override {
 
-		if (operator != owner() && bondedAddress[operator] == false) {
-			revert("Sending not allowed");
-		}
+		require (operator == owner() || bondedAddress[operator] == true,"Send NFT not allowed");
 		super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
 	}
 
