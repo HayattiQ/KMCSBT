@@ -4,6 +4,7 @@ import { getContract, getProvider } from './helpers'
 import fs from 'fs'
 import type { KMCbadge } from '../typechain-types'
 import { BigNumber } from 'ethers'
+import Moralis from 'moralis'
 const { parse } = require('csv-parse/sync')
 
 task('airdrop', 'Push WhiteList from JSON file')
@@ -13,12 +14,7 @@ task('airdrop', 'Push WhiteList from JSON file')
     './scripts/KMCHolder.csv'
   )
   .addOptionalParam('index', 'Bulk Send Chunk Index', 200, types.int)
-  .addOptionalParam(
-    'column',
-    'Bulk Send amount Column',
-    'holder10',
-    types.string
-  )
+  .addOptionalParam('column', 'Bulk Send amount Column', '0', types.string)
   .setAction(async (taskArgs, hre) => {
     type CSVColumn = {
       [k: string]: string | number
@@ -39,7 +35,7 @@ task('airdrop', 'Push WhiteList from JSON file')
       const ad = dropList.slice(i, i + taskArgs.index)
       const tx = await contract.batchMintTo(
         ad.map((e: CSVColumn) => e['HolderAddress'] as string),
-        0,
+        taskArgs.column,
         ad.map((e: CSVColumn) => BigNumber.from(e[taskArgs.column] as number))
       )
 
@@ -48,3 +44,14 @@ task('airdrop', 'Push WhiteList from JSON file')
       await tx.wait()
     }
   })
+
+task('mintSnapshot', 'Take Mint snapshot').setAction(async (taskArgs, hre) => {
+  Moralis.start({
+    apiKey: process.env['MORALIS_API'] || '',
+  })
+  const response = await Moralis.EvmApi.token.getContractNFTTransfers({
+    address: '0x32b5cad3bc188c0f54a1259a47c719e4c6314a89',
+    limit: 1000,
+  })
+  console.log(response.result.length)
+})
