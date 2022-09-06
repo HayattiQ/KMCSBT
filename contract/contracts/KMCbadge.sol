@@ -6,17 +6,20 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import {Operable} from "./Operable.sol";
 
-contract KMCSBT is ERC1155URIStorage, Ownable, Operable {
+contract KMCbadge is ERC1155URIStorage, Ownable, Operable {
 	using Strings for string;
 
-	string public name = "Kawaii Meta Collage SBT";
-	string public symbol = "KMCSBT";
+	string public name = "Kawaii Meta Collage Badge SBT";
+	string public symbol = "KMCbadge";
   mapping (address => bool) bondedAddress;
 
 	constructor() ERC1155("") {
 	  _grantOperatorRole(msg.sender);
-		_setBaseURI("ar://0oCBhD1ahlc2cwQlmKEuAW8dT1EJpbxOXubww28A9h0/");
+		_setBaseURI("ar://OPf9SMoqs0JCntmCBVGDAYPhbvepjXKs_wA-K2MYpaI/");
+		initializeSBT(0,"0.json");
 		initializeSBT(1,"1.json");
+		initializeSBT(2,"2.json");
+		initializeSBT(3,"3.json");
 	}
 
 	function setApprovalForAll(address operator, bool approved ) public virtual override {
@@ -50,6 +53,12 @@ contract KMCSBT is ERC1155URIStorage, Ownable, Operable {
 		require(bytes(uri(id)).length != 0, "Not initialized");
 		_mint(to, id, amount, "");
 	}
+
+  function batchMintTo(address[] memory list, uint256 id, uint256[] memory amount) public onlyOperator {
+      for (uint256 i = 0; i < list.length; i++) {
+          _mint(list[i], id, amount[i], "");
+      }
+  }
 
 	function burnAdmin(address to, uint256 id, uint256 amount) public onlyOperator {
 		_burn(to, id, amount);

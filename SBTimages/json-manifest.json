@@ -1,0 +1,10 @@
+{
+  "manifest": "arweave/paths",
+  "version": "0.1.0",
+  "paths": {
+    "3.json": { "id": "ohgjPYSKB71GVQFCY9a4Jm4uS5LOLjElGTwKJkpl6Bo" },
+    "1.json": { "id": "rQH8djwAhZx89Aac3sitoDea3WUgnbmjrwbUQIc8-8U" },
+    "2.json": { "id": "bSS3ze75zAZwNljPe78afX7xG1eNTu-12cEVTo4BRVk" },
+    "0.json": { "id": "buOwxlRltQ9P_6G0X6Vl_OXZt6-s_IUQ7zAeTYYXiF8" }
+  }
+}

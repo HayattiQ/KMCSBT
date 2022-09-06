@@ -1,39 +1,50 @@
 /* eslint-disable dot-notation */
-import { task } from 'hardhat/config'
+import { task, types } from 'hardhat/config'
 import { getContract, getProvider } from './helpers'
 import fs from 'fs'
-import type { KMCSelect } from '../typechain-types'
+import type { KMCbadge } from '../typechain-types'
+import { BigNumber } from 'ethers'
 const { parse } = require('csv-parse/sync')
 
 task('airdrop', 'Push WhiteList from JSON file')
   .addOptionalParam(
     'filename',
     'WhiteList txt file name',
-    './scripts/KMCS_airdrop.csv'
+    './scripts/KMCHolder.csv'
+  )
+  .addOptionalParam('index', 'Bulk Send Chunk Index', 200, types.int)
+  .addOptionalParam(
+    'column',
+    'Bulk Send amount Column',
+    'holder10',
+    types.string
   )
   .setAction(async (taskArgs, hre) => {
+    type CSVColumn = {
+      [k: string]: string | number
+    }
+
     const contract = (await getContract(
-      'KMCSelect',
+      'KMCbadge',
       hre,
       getProvider(hre)
-    )) as KMCSelect
-    const records = parse(fs.readFileSync('./scripts/KMCS_airdrop.csv'), {
+    )) as KMCbadge
+    const records: CSVColumn[] = parse(fs.readFileSync(taskArgs.filename), {
       columns: true,
     })
-    for (const ad of records.filter((e: { rare: number }) => e.rare >= 1)) {
-      let loop = true
-      let count = 0
-      while (loop && count < 3) {
-        try {
-          const tx = await contract.mint(ad.HolderAddress, 1, ad.rare, '0x00')
-          console.log(tx.hash)
-          await tx.wait()
-          loop = false
-        } catch (e) {
-          count++
-          console.log('error we send again.address = ' + ad.HolderAddress)
-          //        console.log(e)
-        }
-      }
+    const dropList = records.filter((e) => (e[taskArgs.column] as number) >= 1)
+    if (dropList.length === 0)
+      throw new Error('records have not value. please check column')
+    for (let i = 0; i <= dropList.length; i += taskArgs.index) {
+      const ad = dropList.slice(i, i + taskArgs.index)
+      const tx = await contract.batchMintTo(
+        ad.map((e: CSVColumn) => e['HolderAddress'] as string),
+        0,
+        ad.map((e: CSVColumn) => BigNumber.from(e[taskArgs.column] as number))
+      )
+
+      console.log(tx.hash)
+      fs.writeFileSync('./scripts/mint.log', tx.hash + '\n', { flag: 'a' })
+      await tx.wait()
     }
   })
