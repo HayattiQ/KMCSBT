@@ -55,15 +55,15 @@ const config: HardhatUserConfig = {
       chainId: 4,
       accounts: [getEnvVariable('ACCOUNT_PRIVATE_KEY')],
     },
-    matic: {
-      url: "https://rpc-mainnet.maticvigil.com",
+    polygon: {
+      url: 'https://polygon-mainnet.g.alchemy.com/v2/RigxyhOQZ5s7cqzT8tPLakU8rod6Y-5e',
       chainId: 137,
-      accounts: [getEnvVariable("ACCOUNT_PRIVATE_KEY")],
+      accounts: [getEnvVariable('ACCOUNT_PRIVATE_KEY')],
     },
     mumbai: {
-      url: "https://rpc-mumbai.maticvigil.com",
+      url: 'https://rpc-mumbai.maticvigil.com',
       chainId: 80001,
-      accounts: [getEnvVariable("ACCOUNT_PRIVATE_KEY")],
+      accounts: [getEnvVariable('ACCOUNT_PRIVATE_KEY')],
     },
     astar: {
       url: 'https://rpc.astar.network:8545',

@@ -13,7 +13,7 @@ task('airdrop', 'Push WhiteList from JSON file')
     'WhiteList txt file name',
     './scripts/KMCHolder.csv'
   )
-  .addOptionalParam('index', 'Bulk Send Chunk Index', 200, types.int)
+  .addOptionalParam('index', 'Bulk Send Chunk Index', 100, types.int)
   .addOptionalParam('column', 'Bulk Send amount Column', '0', types.string)
   .setAction(async (taskArgs, hre) => {
     type CSVColumn = {
@@ -36,7 +36,8 @@ task('airdrop', 'Push WhiteList from JSON file')
       const tx = await contract.batchMintTo(
         ad.map((e: CSVColumn) => e['HolderAddress'] as string),
         taskArgs.column,
-        ad.map((e: CSVColumn) => BigNumber.from(e[taskArgs.column] as number))
+        ad.map((e: CSVColumn) => BigNumber.from(e[taskArgs.column] as number)),
+        { gasPrice: 80000000000 }
       )
 
       console.log(tx.hash)
