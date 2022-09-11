@@ -2,7 +2,7 @@
 import { task, types } from 'hardhat/config'
 import { getContract, getProvider } from './helpers'
 import fs from 'fs'
-import type { KMCbadge } from '../typechain-types'
+// import type { KMCbadge } from '../typechain-types'
 import { BigNumber } from 'ethers'
 import Moralis from 'moralis'
 const { parse } = require('csv-parse/sync')
@@ -20,11 +20,7 @@ task('airdrop', 'Push WhiteList from JSON file')
       [k: string]: string | number
     }
 
-    const contract = (await getContract(
-      'KMCbadge',
-      hre,
-      getProvider(hre)
-    )) as KMCbadge
+    const contract = await getContract('KMCbadge', hre, getProvider(hre))
     const records: CSVColumn[] = parse(fs.readFileSync(taskArgs.filename), {
       columns: true,
     })
@@ -33,7 +29,7 @@ task('airdrop', 'Push WhiteList from JSON file')
       throw new Error('records have not value. please check column')
     for (let i = 0; i <= dropList.length; i += taskArgs.index) {
       const ad = dropList.slice(i, i + taskArgs.index)
-      const tx = await contract.batchMintTo(
+      const tx = await contract['batchMintTo'](
         ad.map((e: CSVColumn) => e['HolderAddress'] as string),
         taskArgs.column,
         ad.map((e: CSVColumn) => BigNumber.from(e[taskArgs.column] as number)),
