@@ -1,5 +1,5 @@
 {
-  "name": "exchange_frontend",
+  "name": "@kmcsbt/exchange_frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@thirdweb-dev/react": "^2.9.7",
+    "@thirdweb-dev/sdk": "^2.4.9",
+    "ethers": "^5.7.0",
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"

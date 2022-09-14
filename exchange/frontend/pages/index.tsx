@@ -1,3 +1,4 @@
+import { Web3Button } from '@thirdweb-dev/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
@@ -12,42 +13,26 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <Web3Button
+          // The contract address
+          contractAddress="0x424037abd63d32595bD843791ab015C31c87Cb6d"
+          // Access the contract itself, perform any action you want on it:
+          action={(contract) =>
+            contract.erc721.mint({
+              name: 'Hello world!',
+              // This way, you get the benefits of the SDK
+              // Image can be of type File, or any url that points to a file.
+              image: 'ipfs://Qmf9csTfndWRgH2z35WUBm9jTuQKfSv1dJC9YKW6iTZkDP/0',
+              description: 'Your awesome NFT',
+            })
+          }
+          // If the function succeeds, we can do something here.
+          onSuccess={(result) => console.log(result)}
+          // If the function fails, we can do something here.
+          onError={(error) => console.error(error)}
+        >
+          Mint NFT
+        </Web3Button>
       </main>
 
       <footer className={styles.footer}>
