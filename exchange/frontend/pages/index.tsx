@@ -1,9 +1,20 @@
-import { Web3Button } from '@thirdweb-dev/react'
+import {
+  ConnectWallet,
+  useContract,
+  useContractRead,
+  useContractWrite,
+} from '@thirdweb-dev/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+  const { contract } = useContract('0x31becf5ec3987315d2986305aee61e0c54903cdd')
+  const { data: nft, isLoading, error } = useContractRead(contract, 'owner')
+  console.log(error)
+
+  //  const { mutate: myFunction } = useContractWrite(contract, 'burnAndMint')
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,26 +24,8 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Web3Button
-          // The contract address
-          contractAddress="0x424037abd63d32595bD843791ab015C31c87Cb6d"
-          // Access the contract itself, perform any action you want on it:
-          action={(contract) =>
-            contract.erc721.mint({
-              name: 'Hello world!',
-              // This way, you get the benefits of the SDK
-              // Image can be of type File, or any url that points to a file.
-              image: 'ipfs://Qmf9csTfndWRgH2z35WUBm9jTuQKfSv1dJC9YKW6iTZkDP/0',
-              description: 'Your awesome NFT',
-            })
-          }
-          // If the function succeeds, we can do something here.
-          onSuccess={(result) => console.log(result)}
-          // If the function fails, we can do something here.
-          onError={(error) => console.error(error)}
-        >
-          Mint NFT
-        </Web3Button>
+        <ConnectWallet accentColor="#f213a4" colorMode="light" />
+        {!isLoading ? nft : <p>Loading...{error}</p>}
       </main>
 
       <footer className={styles.footer}>

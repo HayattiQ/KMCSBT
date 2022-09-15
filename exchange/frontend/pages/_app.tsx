@@ -1,4 +1,3 @@
-import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react'
 
@@ -6,9 +5,11 @@ import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react'
 const activeChainId = ChainId.Mumbai
 
 function MyApp({ Component, pageProps }: AppProps) {
-  ;<ThirdwebProvider desiredChainId={activeChainId}>
-    return <Component {...pageProps} />
-  </ThirdwebProvider>
+  return (
+    <ThirdwebProvider desiredChainId={activeChainId}>
+      <Component {...pageProps} />
+    </ThirdwebProvider>
+  )
 }
 
 export default MyApp

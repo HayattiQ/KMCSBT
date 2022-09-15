@@ -4,9 +4,6 @@
   "version": "1.0.0",
   "description": "NFTBoil collection",
   "main": "index.js",
-  "scripts": {
-    "prepare": "husky install"
-  },
   "workspaces": [
     "frontend",
     "exchange/frontend",
@@ -37,13 +34,8 @@
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HayattiQ/NFTBoil.git"
-  },
   "author": "HayattiQ",
   "license": "MIT",
-  "homepage": "https://github.com/HayattiQ/NFTBoil#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.2"
   }
