@@ -38,6 +38,5 @@
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.2"
-  },
-  "packageManager": "yarn@3.2.3"
+  }
 }
