@@ -1,18 +1,16 @@
-import {
-  ConnectWallet,
-  useContract,
-  useContractRead,
-  useContractWrite,
-} from '@thirdweb-dev/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Moralis from 'moralis'
+import { ConnectButton } from '@web3modal/react'
+import { GetServerSideProps } from 'next'
 
-export default function Home() {
-  const { contract } = useContract('0x31becf5ec3987315d2986305aee61e0c54903cdd')
-  const { data: nft, isLoading, error } = useContractRead(contract, 'owner')
-  console.log(error)
+type Props = {
+  nativeBalance?: string
+  address?: string
+}
 
+export default function Home({ nativeBalance, address }: Props) {
   //  const { mutate: myFunction } = useContractWrite(contract, 'burnAndMint')
 
   return (
@@ -24,8 +22,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <ConnectWallet accentColor="#f213a4" colorMode="light" />
-        {!isLoading ? nft : <p>Loading...{error}</p>}
+        <div>
+          <h3>Wallet: {address}</h3>
+          <h3>Native Balance: {nativeBalance} ETH</h3>
+          <ConnectButton />
+        </div>
       </main>
 
       <footer className={styles.footer}>
@@ -42,4 +43,23 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // reads the api key from .env.local and starts Moralis SDK
+  await Moralis.start({ apiKey: process.env.MORALIS_API_KEY })
+
+  const address = '0x79c3e736445f9eeeCa6467103fBF3b0c924e59e0'
+
+  const nativeBalance = await Moralis.EvmApi.balance.getNativeBalance({
+    address,
+  })
+
+  return {
+    props: {
+      address,
+      // Return the native balance formatted in ether via the .ether getter
+      nativeBalance: nativeBalance.result.balance.ether,
+    },
+  }
 }
