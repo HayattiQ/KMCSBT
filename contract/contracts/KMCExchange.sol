@@ -4,33 +4,70 @@ pragma solidity ^0.8.16;
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import {Operable} from './Operable.sol';
-import "./interface/IKMCbadge.sol";
+import './interface/IKMCbadge.sol';
 
 contract KMCExchange is Ownable, Operable {
     using Strings for string;
 
     IKMCbadge private badge;
-    mapping(uint256 => uint256) public amount;
-    mapping(uint256 => uint256) public badgeID;
+
+    struct Exchanges {
+        string name;
+        uint256 amount;
+        uint256 badgeID;
+        uint256 totalCap;
+        uint256 claimed;
+        bool expired;
+    }
+    mapping(uint256 => Exchanges) public exchange;
 
     constructor() {
         _grantOperatorRole(msg.sender);
-        badge = IKMCbadge(0x02BDB15B131e2aF35Dd1DB5104Cc95aAD1BcAE5d);
+        setBadgeAddress(0x02BDB15B131e2aF35Dd1DB5104Cc95aAD1BcAE5d);
     }
 
-    function setWL(uint256 WhiteListID, uint256 burnID, uint256 _amount) public onlyOperator {
-      amount[WhiteListID] = _amount;
-      badgeID[WhiteListID] = burnID;
+    function setBadgeAddress(address _address) public onlyOperator {
+        badge = IKMCbadge(_address);
     }
 
-    function burnAndMint (uint256 WhiteListID) public {
-       require(amount[WhiteListID] > 0, "WhiteListID not set amount");
-       require(badgeID[WhiteListID] > 0, "WhiteListID not set badgeID");
-       require(
-        badge.balanceOf(msg.sender, badgeID[WhiteListID]) >= amount[WhiteListID],
-        "you don't have enough badge");
-       badge.burnAdmin(msg.sender, badgeID[WhiteListID], amount[WhiteListID]);
-       badge.mint(msg.sender, WhiteListID, 1);
+    function getExchangeData(uint256 ExchangeID)
+        public
+        view
+        returns (Exchanges memory)
+    {
+        return exchange[ExchangeID];
     }
 
+    function setWL(
+        string memory name,
+        uint256 ExchangeID,
+        uint256 burnID,
+        uint256 _amount,
+        uint256 totalCap
+    ) public onlyOperator {
+        exchange[ExchangeID].name = name;
+        exchange[ExchangeID].amount = _amount;
+        exchange[ExchangeID].badgeID = burnID;
+        exchange[ExchangeID].totalCap = totalCap;
+    }
+
+    function burnAndMint(uint256 ExchangeID) public {
+        require(exchange[ExchangeID].amount > 0, 'WhiteListID not set amount');
+        require(
+            exchange[ExchangeID].totalCap >= exchange[ExchangeID].claimed,
+            'Already Claimed MAX'
+        );
+        require(
+            badge.balanceOf(msg.sender, exchange[ExchangeID].badgeID) >=
+                exchange[ExchangeID].amount,
+            "you don't have enough badge"
+        );
+        badge.burnAdmin(
+            msg.sender,
+            exchange[ExchangeID].badgeID,
+            exchange[ExchangeID].amount
+        );
+        badge.mint(msg.sender, ExchangeID, 1);
+        exchange[ExchangeID].claimed = exchange[ExchangeID].badgeID + 1;
+    }
 }

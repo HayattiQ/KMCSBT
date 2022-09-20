@@ -5,7 +5,6 @@ import type { HardhatUserConfig } from 'hardhat/config'
 import { getEnvVariable } from './scripts/helpers'
 import '@typechain/hardhat'
 import '@nomiclabs/hardhat-etherscan'
-import 'hardhat-gas-reporter'
 import './scripts/tasks'
 
 const config: HardhatUserConfig = {
@@ -26,11 +25,9 @@ const config: HardhatUserConfig = {
       polygon: process.env['POLYGON_API'] || '',
       polygonMumbai: process.env['POLYGON_API'] || '',
       mainnet: process.env['ETH_API'] || '',
+      goerli: process.env['ETH_API'] || '',
       rinkeby: process.env['ETH_API'] || '',
     },
-  },
-  gasReporter: {
-    enabled: !!process.env['REPORT_GAS'],
   },
   networks: {
     localhost: {
@@ -40,9 +37,9 @@ const config: HardhatUserConfig = {
         mnemonic: 'test test test test test test test test test test test junk',
       },
     },
-    kovan: {
-      url: 'https://kovan.optimism.io/',
-      chainId: 69,
+    goerli: {
+      url: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+      chainId: 5,
       accounts: [getEnvVariable('ACCOUNT_PRIVATE_KEY')],
     },
     ethereum: {

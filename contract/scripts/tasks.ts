@@ -5,7 +5,22 @@ import fs from 'fs'
 // import type { KMCbadge } from '../typechain-types'
 import { BigNumber } from 'ethers'
 import Moralis from 'moralis'
+import abi from "./abi.json"
+import "@nomiclabs/hardhat-ethers";
+import { getContractAt } from '@nomiclabs/hardhat-ethers/internal/helpers'
 const { parse } = require('csv-parse/sync')
+
+
+task("mintTest", 'test external contract')
+  .setAction(async (taskArgs, hre) => {
+
+    const contract = await getContractAt(hre, abi, "0x7488c29913b5568d46226530Cd0600bc96e12228");
+    for (let i = 0; i <= 10; i++) {
+      const tx = await contract['publicMint'](1, { gasPrice: 80000000000 });
+      console.log(tx.hash);
+    }
+  })
+
 
 task('airdrop', 'Push WhiteList from JSON file')
   .addOptionalParam(
