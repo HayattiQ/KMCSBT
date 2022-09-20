@@ -14,9 +14,9 @@ const { parse } = require('csv-parse/sync')
 task("mintTest", 'test external contract')
   .setAction(async (taskArgs, hre) => {
 
-    const contract = await getContractAt(hre, abi, "0x7488c29913b5568d46226530Cd0600bc96e12228");
+    const contract = await getContractAt(hre, abi, "0x488d69dea61d097158dcd5221d6792faf1e6ab4c");
     for (let i = 0; i <= 10; i++) {
-      const tx = await contract['publicMint'](1, { gasPrice: 80000000000 });
+      const tx = await contract['publicMint'](1, { value: 0, gasPrice: 50000000000 });
       console.log(tx.hash);
     }
   })
