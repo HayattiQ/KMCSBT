@@ -2,41 +2,30 @@
   "name": "kmcsbt",
   "private": true,
   "version": "1.0.0",
-  "description": "NFTBoil collection",
+  "description": "KMC SBT Collection",
   "main": "index.js",
-  "workspaces": [
-    "frontend",
-    "exchange/frontend",
-    "generate",
-    "contract"
-  ],
+  "scripts": {
+    "preinstall": "npx -y only-allow pnpm"
+  },
+  "engines": {
+    "node": ">=16.15.0",
+    "npm": "use pnpm",
+    "pnpm": ">=7",
+    "yarn": "use pnpm"
+  },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.5",
-    "@nomiclabs/hardhat-etherscan": "^3.1.0",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "@typechain/hardhat": "^6.0.0",
-    "@types/chai": "^4.3.0",
-    "@types/mocha": "^9.1.0",
-    "@types/node": "^17.0.23",
-    "@types/sharp": "^0.30.2",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
-    "chai": "^4.3.6",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.3",
     "eslint-plugin-promise": "^6.0.0",
-    "hardhat-gas-reporter": "^1.0.8",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0-beta.24",
-    "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },
   "author": "HayattiQ",
-  "license": "MIT",
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.7.2"
-  }
+  "license": "MIT"
 }
