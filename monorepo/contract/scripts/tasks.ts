@@ -26,10 +26,10 @@ task('airdrop', 'Push WhiteList from JSON file')
   .addOptionalParam(
     'filename',
     'WhiteList txt file name',
-    './scripts/KMCHolder.csv'
+    './scripts/0922.csv'
   )
   .addOptionalParam('index', 'Bulk Send Chunk Index', 100, types.int)
-  .addOptionalParam('column', 'Bulk Send amount Column', '0', types.string)
+  .addOptionalParam('column', 'Bulk Send amount Column', 'Quantity', types.string)
   .setAction(async (taskArgs, hre) => {
     type CSVColumn = {
       [k: string]: string | number
@@ -39,16 +39,16 @@ task('airdrop', 'Push WhiteList from JSON file')
     const records: CSVColumn[] = parse(fs.readFileSync(taskArgs.filename), {
       columns: true,
     })
-    const dropList = records.filter((e) => (e[taskArgs.column] as number) >= 1)
+    const dropList = records.filter((e) => (Number(e[taskArgs.column])) >= 1)
     if (dropList.length === 0)
       throw new Error('records have not value. please check column')
     for (let i = 0; i <= dropList.length; i += taskArgs.index) {
       const ad = dropList.slice(i, i + taskArgs.index)
       const tx = await contract['batchMintTo'](
         ad.map((e: CSVColumn) => e['HolderAddress'] as string),
-        taskArgs.column,
-        ad.map((e: CSVColumn) => BigNumber.from(e[taskArgs.column] as number)),
-        { gasPrice: 80000000000 }
+        4,
+        ad.map((e: CSVColumn) => BigNumber.from(1)),
+        { gasPrice: 80000000000, gasLimit: 8000000 }
       )
 
       console.log(tx.hash)

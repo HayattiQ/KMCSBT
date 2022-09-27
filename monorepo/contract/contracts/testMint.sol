@@ -28,8 +28,6 @@ contract testMint is ERC721A, ERC2981, Ownable, Pausable {
     uint256 public constant MAX_SUPPLY = 5000;
     string private constant BASE_EXTENSION = '.json';
     uint256 private constant PUBLIC_MAX_PER_TX = 10;
-    address private constant BULK_TRANSFER_ADDRESS =
-        0xFbD1977ebf1Af6a492754B096304fC44459371B8;
     address private constant DEFAULT_ROYALITY_ADDRESS =
         0xFbD1977ebf1Af6a492754B096304fC44459371B8;
     bytes32 public merkleRoot;
@@ -37,10 +35,6 @@ contract testMint is ERC721A, ERC2981, Ownable, Pausable {
 
     constructor() ERC721A('testMint', 'test') {
         _setDefaultRoyalty(DEFAULT_ROYALITY_ADDRESS, royaltyFee);
-        _mintERC2309(BULK_TRANSFER_ADDRESS, 198);
-        for (uint256 i; i < 19; ++i) {
-            _initializeOwnershipAt(i * 10);
-        }
     }
 
     modifier whenMintable() {
@@ -79,15 +73,16 @@ contract testMint is ERC721A, ERC2981, Ownable, Pausable {
         merkleRoot = _merkleRoot;
     }
 
-    function publicMint(uint256 _mintAmount)
+    function publicMint(address wallet, uint256 _mintAmount)
         public
+        payable
         whenNotPaused
         whenMintable
         callerIsUser
     {
         require(_mintAmount <= PUBLIC_MAX_PER_TX, 'Mint amount over');
 
-        _mint(msg.sender, _mintAmount);
+        _mint(wallet, _mintAmount);
     }
 
     function preMint(uint256 _mintAmount, bytes32[] calldata _merkleProof)
