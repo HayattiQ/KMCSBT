@@ -1,9 +1,7 @@
 /* eslint-disable dot-notation */
 import 'dotenv/config'
-import '@nomiclabs/hardhat-waffle'
 import type { HardhatUserConfig } from 'hardhat/config'
 import { getEnvVariable } from './scripts/helpers'
-import '@typechain/hardhat'
 import '@nomiclabs/hardhat-etherscan'
 import './scripts/tasks'
 
