@@ -1,0 +1,12 @@
+{
+"manifest": "arweave/paths",
+"version": "0.1.0",
+"paths": {
+"1.json":{"id":"00-0XckzIPBRHFGATwDUY8gvbt2pcQ1x3VTSsh8nKwo"},
+"0.json":{"id":"_F6U5lVAreTwdWjjIJLB9GVo6kOSuKVwp1OLFx4nwrg"},
+"2.json":{"id":"mtdZngTEsgzI54Sad5h2UeuEYbemmLz0_LGWo9YlPGY"},
+"4.json":{"id":"rjLuBocrqbh0BtZUydR6r2gjO55eA9d49Yqk1tzaGSQ"},
+"5.json":{"id":"H5lSUeDpnFkV4BAsshCFTKDLoIzGye_2Ql8Xf5HNI0I"},
+"3.json":{"id":"vqR_0YDqSTTokdNuaugYjzZuzMyWVcpOZXdl-z9eJMA"}
+}
+}

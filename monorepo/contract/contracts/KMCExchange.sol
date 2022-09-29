@@ -3,7 +3,7 @@ pragma solidity ^0.8.16;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
-import {Operable} from './Operable.sol';
+import {Operable} from './extensions/Operable.sol';
 import './interface/IKMCbadge.sol';
 
 contract KMCExchange is Ownable, Operable {

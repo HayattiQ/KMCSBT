@@ -2,8 +2,8 @@
 import 'dotenv/config'
 import type { HardhatUserConfig } from 'hardhat/config'
 import { getEnvVariable } from './scripts/helpers'
-import '@nomiclabs/hardhat-etherscan'
 import './scripts/tasks'
+import "@nomicfoundation/hardhat-toolbox";
 
 const config: HardhatUserConfig = {
   defaultNetwork: 'localhost',

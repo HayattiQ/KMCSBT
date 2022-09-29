@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
-import {Operable} from './Operable.sol';
+import {Operable} from './extensions/Operable.sol';
 
 contract KMCbadge is ERC1155URIStorage, Ownable, Operable {
     using Strings for string;
