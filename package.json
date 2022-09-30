@@ -7,6 +7,10 @@
   "engines": {
     "node": ">=16.15.0"
   },
+  "workspaces": [
+    "monorepo/contract",
+    "monorepo/yamakeivr"
+  ],
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@openzeppelin/contracts": "^4.7.3",
