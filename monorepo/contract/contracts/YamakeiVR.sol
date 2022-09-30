@@ -1,22 +1,21 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.16;
+pragma solidity >=0.8.17;
 
 /// @title: NFTBoil
 /// @author: HayattiQ
 /// @dev: This contract using NFTBoil (https://github.com/HayattiQ/NFTBoil)
 
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/utils/Strings.sol';
+import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol';
+import '@openzeppelin/contracts/token/common/ERC2981.sol';
+import './extensions/ERC721ALockable.sol';
+import '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
-import "@openzeppelin/contracts/token/common/ERC2981.sol";
-import "./extensions/ERC721ALockable.sol";
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-
-contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
+contract YamakeiVR is ERC721ALockable, ERC2981, Ownable, Pausable {
     using Strings for uint256;
 
-    string private baseURI = "";
+    string private baseURI = '';
 
     bool public presale = true;
     uint256 public presale_max = 1;
@@ -24,23 +23,22 @@ contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
     address public royaltyAddress;
     uint96 public royaltyFee = 500;
 
-    uint256 constant public MAX_SUPPLY = 300;
-    string constant private BASE_EXTENSION = ".json";
-    uint256 constant private PUBLIC_MAX_PER_TX = 1;
-    address constant private BULK_TRANSFER_ADDRESS = 0xFbD1977ebf1Af6a492754B096304fC44459371B8;
-    address constant private DEFAULT_ROYALITY_ADDRESS = 0xFbD1977ebf1Af6a492754B096304fC44459371B8;
+    uint256 public constant MAX_SUPPLY = 300;
+    string private constant BASE_EXTENSION = '.json';
+    uint256 private constant PUBLIC_MAX_PER_TX = 1;
+    address private constant DEFAULT_ROYALITY_ADDRESS =
+        0xFbD1977ebf1Af6a492754B096304fC44459371B8;
     bytes32 public merkleRoot;
     mapping(address => uint256) private whiteListClaimed;
 
-    constructor(
-        string memory _name,
-        string memory _symbol
-    ) ERC721A(_name, _symbol) {
+    constructor(string memory _name, string memory _symbol)
+        ERC721A(_name, _symbol)
+    {
         _setDefaultRoyalty(DEFAULT_ROYALITY_ADDRESS, royaltyFee);
     }
 
     modifier whenMintable() {
-        require(mintable == true, "Mintable: paused");
+        require(mintable == true, 'Mintable: paused');
         _;
     }
 
@@ -48,7 +46,7 @@ contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
      * @dev The modifier allowing the function access only for real humans.
      */
     modifier callerIsUser() {
-        require(tx.origin == msg.sender, "The caller is another contract");
+        require(tx.origin == msg.sender, 'The caller is another contract');
         _;
     }
 
@@ -57,8 +55,15 @@ contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
         return baseURI;
     }
 
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        return string(abi.encodePacked(ERC721A.tokenURI(tokenId), BASE_EXTENSION));
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
+        return
+            string(abi.encodePacked(ERC721A.tokenURI(tokenId), BASE_EXTENSION));
     }
 
     /**
@@ -68,17 +73,15 @@ contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
         merkleRoot = _merkleRoot;
     }
 
-    function publicMint(uint256 _mintAmount) public
-    whenNotPaused
-    whenMintable
-    callerIsUser
+    function publicMint(uint256 _mintAmount)
+        public
+        whenNotPaused
+        whenMintable
+        callerIsUser
     {
         mintCheck(_mintAmount, 0);
-        require(!presale, "Presale is active.");
-        require(
-            _mintAmount <= PUBLIC_MAX_PER_TX,
-            "Mint amount over"
-        );
+        require(!presale, 'Presale is active.');
+        require(_mintAmount <= PUBLIC_MAX_PER_TX, 'Mint amount over');
 
         _mint(msg.sender, _mintAmount);
     }
@@ -88,37 +91,31 @@ contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
         whenMintable
         whenNotPaused
     {
-        mintCheck(_mintAmount,  0);
-        require(presale, "Presale is not active.");
+        mintCheck(_mintAmount, 0);
+        require(presale, 'Presale is not active.');
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(
             MerkleProof.verifyCalldata(_merkleProof, merkleRoot, leaf),
-            "Invalid Merkle Proof"
+            'Invalid Merkle Proof'
         );
 
         require(
             whiteListClaimed[msg.sender] + _mintAmount <= presale_max,
-            "Already claimed max"
+            'Already claimed max'
         );
 
         _mint(msg.sender, _mintAmount);
-         whiteListClaimed[msg.sender] += _mintAmount;
+        whiteListClaimed[msg.sender] += _mintAmount;
     }
 
-    function mintCheck(
-        uint256 _mintAmount,
-        uint256 cost
-    ) private view {
-        require(_mintAmount > 0, "Mint amount cannot be zero");
-        require(
-            totalSupply() + _mintAmount <= MAX_SUPPLY,
-            "MAXSUPPLY over"
-        );
-        require(msg.value >= cost, "Not enough funds");
+    function mintCheck(uint256 _mintAmount, uint256 cost) private view {
+        require(_mintAmount > 0, 'Mint amount cannot be zero');
+        require(totalSupply() + _mintAmount <= MAX_SUPPLY, 'MAXSUPPLY over');
+        require(msg.value >= cost, 'Not enough funds');
     }
 
     function ownerMint(address _address, uint256 count) public onlyOwner {
-       _mint(_address, count);
+        _mint(_address, count);
     }
 
     function setPresale(bool _state) public onlyOwner {
@@ -150,6 +147,18 @@ contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
     }
 
     /**
+     * @dev Admin専用。 解除の時は null addressでadminLock
+     */
+    function adminLock(address unlocker, uint256[] calldata ids)
+        public
+        onlyOwner
+    {
+        for (uint256 i = 1; i <= ids.length; i++) {
+            unlockers[ids[i]] = unlocker;
+        }
+    }
+
+    /**
      * @notice Change the royalty fee for the collection
      */
     function setRoyaltyFee(uint96 _feeNumerator) external onlyOwner {
@@ -165,12 +174,15 @@ contract NFTBoilMerkleA is ERC721ALockable, ERC2981 , Ownable, Pausable  {
         _setDefaultRoyalty(royaltyAddress, royaltyFee);
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    ) public view virtual override(ERC721ALockable, ERC2981) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721ALockable, ERC2981)
+        returns (bool)
+    {
         return
             ERC721ALockable.supportsInterface(interfaceId) ||
             ERC2981.supportsInterface(interfaceId);
     }
-
 }

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity >=0.8.9;
 
-import {Context} from "@openzeppelin/contracts/utils/Context.sol";
-import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
+import {Context} from '@openzeppelin/contracts/utils/Context.sol';
+import {Strings} from '@openzeppelin/contracts/utils/Strings.sol';
 
 abstract contract Operable is Context {
     mapping(address => bool) _operators;
@@ -21,9 +21,9 @@ abstract contract Operable is Context {
             !_operators[_candidate],
             string(
                 abi.encodePacked(
-                    "account ",
+                    'account ',
                     Strings.toHexString(uint160(_msgSender()), 20),
-                    " is already has an operator role"
+                    ' is already has an operator role'
                 )
             )
         );
@@ -40,9 +40,9 @@ abstract contract Operable is Context {
             _operators[_operator],
             string(
                 abi.encodePacked(
-                    "account ",
+                    'account ',
                     Strings.toHexString(uint160(_msgSender()), 20),
-                    " is not an operator"
+                    ' is not an operator'
                 )
             )
         );
