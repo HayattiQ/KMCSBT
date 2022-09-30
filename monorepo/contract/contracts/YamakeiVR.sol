@@ -150,7 +150,7 @@ contract YamakeiVR is ERC721ALockable, ERC2981, Ownable, Pausable {
         public
         onlyOwner
     {
-        for (uint256 i = 1; i <= ids.length; i++) {
+        for (uint256 i = 0; i < ids.length; i++) {
             unlockers[ids[i]] = unlocker;
         }
     }
