@@ -14,5 +14,9 @@
   },
   "keywords": [],
   "author": "HayattiQ",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.32"
+  }
 }
