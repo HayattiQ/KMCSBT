@@ -17,7 +17,7 @@ contract YamakeiVR is ERC721ALockable, ERC2981, Ownable, Pausable {
 
     string private baseURI = '';
 
-    bool public presale = true;
+    bool public presale = false;
     uint256 public presale_max = 1;
     bool public mintable = true;
     address public royaltyAddress;
@@ -31,9 +31,7 @@ contract YamakeiVR is ERC721ALockable, ERC2981, Ownable, Pausable {
     bytes32 public merkleRoot;
     mapping(address => uint256) private whiteListClaimed;
 
-    constructor(string memory _name, string memory _symbol)
-        ERC721A(_name, _symbol)
-    {
+    constructor() ERC721A('YamakeiVR', 'YAMA') {
         _setDefaultRoyalty(DEFAULT_ROYALITY_ADDRESS, royaltyFee);
     }
 
@@ -103,7 +101,6 @@ contract YamakeiVR is ERC721ALockable, ERC2981, Ownable, Pausable {
             whiteListClaimed[msg.sender] + _mintAmount <= presale_max,
             'Already claimed max'
         );
-
         _mint(msg.sender, _mintAmount);
         whiteListClaimed[msg.sender] += _mintAmount;
     }

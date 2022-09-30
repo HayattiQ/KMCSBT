@@ -1,6 +1,6 @@
 // Load dependencies
+// @ts-nocheck
 const { expect } = require('chai');
-
 const { ethers } = require('hardhat');
 
 
