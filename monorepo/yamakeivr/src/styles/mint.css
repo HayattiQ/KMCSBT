@@ -1,6 +1,5 @@
 .background {
   background-color: #f9efff;
-  background-image: url('background.png');
   background-position: center center;
   background-size: 530px auto;
   display: flex;

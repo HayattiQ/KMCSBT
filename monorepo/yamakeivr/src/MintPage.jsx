@@ -353,7 +353,7 @@ const Mint = () => {
             color: 'var(--secondary)',
           }}
         >
-          FreeMint
+          YAMAKEI NFT FreeMint
         </s.TextTitle>
         <s.SpacerSmall />
         <s.TextTitle
