@@ -5,7 +5,7 @@ import type { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import type { YamakeiVR } from '../typechain-types'
 import { expect } from 'chai'
 
-describe(`NFTBoilMerkleA contract`, function () {
+describe(`LockFunction contract test`, function () {
   let owner: SignerWithAddress
   let bob: SignerWithAddress
   let alis: SignerWithAddress
