@@ -1,13 +1,13 @@
 {
-  "CONTRACT_ADDRESS": "0xB51f9646e6C42CBE7E236518F721A1157F4c2B03",
-  "SCAN_LINK": "https://goerli.etherscan.io/address/0xB51f9646e6C42CBE7E236518F721A1157F4c2B03",
+  "CONTRACT_ADDRESS": "0x7191a1EF75602587d3C666bc1d9d0880ce16cA6f",
+  "SCAN_LINK": "https://etherscan.io/address/0x7191a1EF75602587d3C666bc1d9d0880ce16cA6f",
   "NETWORK": {
-    "NAME": "Goerli",
+    "NAME": "Ethereum",
     "SYMBOL": "ETH",
-    "ID": 4,
+    "ID": 1,
     "DECIMALS": 18,
-    "RPC_URL": "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-    "BLOCK_EXPLORER_URL": "https://goerli.etherscan.io/"
+    "RPC_URL": "https://eth-mainnet.g.alchemy.com/v2/Peofv0-31TJjEYH8jPmOnFjRXtCdjMZ5",
+    "BLOCK_EXPLORER_URL": "https://etherscan.io/"
   },
   "NFT_NAME": "YamakeiVR",
   "SYMBOL": "YAMA",

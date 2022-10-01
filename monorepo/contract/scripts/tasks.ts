@@ -4,7 +4,6 @@ import { getContract, getProvider } from './helpers'
 import fs from 'fs'
 // import type { KMCbadge } from '../typechain-types'
 import { BigNumber } from 'ethers'
-import Moralis from 'moralis'
 import abi from "./abi.json"
 import "@nomiclabs/hardhat-ethers";
 import { getContractAt } from '@nomiclabs/hardhat-ethers/internal/helpers'
@@ -56,14 +55,3 @@ task('airdrop', 'Push WhiteList from JSON file')
       await tx.wait()
     }
   })
-
-task('mintSnapshot', 'Take Mint snapshot').setAction(async (taskArgs, hre) => {
-  Moralis.start({
-    apiKey: process.env['MORALIS_API'] || '',
-  })
-  const response = await Moralis.EvmApi.token.getContractNFTTransfers({
-    address: '0x32b5cad3bc188c0f54a1259a47c719e4c6314a89',
-    limit: 1000,
-  })
-  console.log(response.result.length)
-})
