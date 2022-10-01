@@ -14,7 +14,7 @@
   "MAX_SUPPLY": 300,
   "PAUSED": false,
   "MARKETPLACE": "OpenSea",
-  "MARKETPLACE_LINK": "https://opensea.io/",
+  "MARKETPLACE_LINK": "https://opensea.io/ja/collection/yamakeivr",
   "MAX_MINT_AMOUNT_PRE": 1,
   "MAX_MINT_AMOUNT_PUBLIC": 1
 }
