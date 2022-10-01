@@ -31,12 +31,6 @@ export const fetchData = () => {
         .blockchain.smartContract.methods.totalSupply()
         .call()
 
-      const cost = await store
-        .getState()
-        .blockchain.smartContract.methods.getCurrentCost()
-        .call()
-      const display_cost = web3.utils.fromWei(cost, 'ether')
-
       const presale = await store
         .getState()
         .blockchain.smartContract.methods.presale()
@@ -45,8 +39,6 @@ export const fetchData = () => {
       dispatch(
         fetchDataSuccess({
           totalSupply,
-          cost,
-          display_cost,
           presale,
         })
       )

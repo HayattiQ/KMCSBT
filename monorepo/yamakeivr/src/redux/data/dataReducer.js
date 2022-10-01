@@ -19,8 +19,6 @@ const dataReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         totalSupply: action.payload.totalSupply,
-        cost: action.payload.cost,
-        displayCost: action.payload.display_cost,
         presale: action.payload.presale,
         error: false,
         errorMsg: '',

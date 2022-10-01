@@ -98,7 +98,6 @@ const Mint = () => {
   })
 
   const claimNFTs = () => {
-    let cost = data.cost
     let method = null
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
     setClaimingNft(true)
@@ -263,9 +262,7 @@ const Mint = () => {
       <>
         <s.TextTitle
           style={{ textAlign: 'center', color: 'var(--accent-text)' }}
-        >
-          1 {CONFIG.SYMBOL} costs {data.displayCost} {CONFIG.NETWORK.SYMBOL}.
-        </s.TextTitle>
+        ></s.TextTitle>
         <s.TextDescription
           style={{ textAlign: 'center', color: 'var(--accent-text)' }}
         >
@@ -315,7 +312,7 @@ const Mint = () => {
         </s.Container>
         <s.SpacerSmall />
         <s.Container ai={'center'} jc={'center'} fd={'row'}>
-          {data.cost ? <BuyButton /> : <div color="#FFFFFF">Loading</div>}
+          {data.presale ? <BuyButton /> : <div color="#FFFFFF">Loading</div>}
         </s.Container>
       </>
     )
