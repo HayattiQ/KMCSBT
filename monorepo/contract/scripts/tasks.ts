@@ -1,22 +1,33 @@
 /* eslint-disable dot-notation */
 import { task, types } from 'hardhat/config'
 import { getContract, getProvider } from './helpers'
+import { addresses } from './airdrop_import'
 import fs from 'fs'
-// import type { KMCbadge } from '../typechain-types'
 import { BigNumber } from 'ethers'
-import abi from "./abi.json"
 import "@nomiclabs/hardhat-ethers";
-import { getContractAt } from '@nomiclabs/hardhat-ethers/internal/helpers'
+import type { YamakeiVR } from '../typechain-types'
 const { parse } = require('csv-parse/sync')
 
 
-task("mintTest", 'test external contract')
+type CSVColumn = {
+  [k: string]: string | number
+}
+
+
+task("batchTransfer", 'test external contract')
   .setAction(async (taskArgs, hre) => {
 
-    const contract = await getContractAt(hre, abi, "0x488d69dea61d097158dcd5221d6792faf1e6ab4c");
-    for (let i = 0; i <= 10; i++) {
-      const tx = await contract['publicMint'](1, { value: 0, gasPrice: 50000000000 });
-      console.log(tx.hash);
+    const contract = await getContract('YamakeiVR', hre, getProvider(hre)) as YamakeiVR
+    for (let i = 55; i <= 98; i++) {
+      const tx = await contract['safeTransferFrom(address,address,uint256)'](
+        "0x79c3e736445f9eeeCa6467103fBF3b0c924e59e0",
+        addresses[i - 55],
+        i
+      )
+
+      console.log(tx.hash)
+      fs.writeFileSync('./scripts/mint.log', tx.hash + '\n', { flag: 'a' })
+      await tx.wait()
     }
   })
 
@@ -30,10 +41,6 @@ task('airdrop', 'Push WhiteList from JSON file')
   .addOptionalParam('index', 'Bulk Send Chunk Index', 100, types.int)
   .addOptionalParam('column', 'Bulk Send amount Column', 'Quantity', types.string)
   .setAction(async (taskArgs, hre) => {
-    type CSVColumn = {
-      [k: string]: string | number
-    }
-
     const contract = await getContract('KMCbadge', hre, getProvider(hre))
     const records: CSVColumn[] = parse(fs.readFileSync(taskArgs.filename), {
       columns: true,
