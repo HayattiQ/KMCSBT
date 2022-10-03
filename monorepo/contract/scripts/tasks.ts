@@ -45,14 +45,15 @@ task('airdrop', 'Push WhiteList from JSON file')
     const records: CSVColumn[] = parse(fs.readFileSync(taskArgs.filename), {
       columns: true,
     })
-    const dropList = records.filter((e) => (Number(e[taskArgs.column])) >= 1)
+    // const dropList = records.filter((e) => (Number(e[taskArgs.column])) >= 1)
+    const dropList = records
     if (dropList.length === 0)
       throw new Error('records have not value. please check column')
     for (let i = 0; i <= dropList.length; i += taskArgs.index) {
       const ad = dropList.slice(i, i + taskArgs.index)
       const tx = await contract['batchMintTo'](
         ad.map((e: CSVColumn) => e['HolderAddress'] as string),
-        4,
+        5,
         ad.map((e: CSVColumn) => BigNumber.from(1)),
         { gasPrice: 80000000000, gasLimit: 8000000 }
       )
