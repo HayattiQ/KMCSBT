@@ -5,16 +5,17 @@ import { addresses } from './airdrop_import'
 import fs from 'fs'
 import { BigNumber } from 'ethers'
 import "@nomiclabs/hardhat-ethers";
-import type { YamakeiVR } from '../typechain-types'
+import type { KMCbadge, YamakeiVR } from '../typechain-types'
+import { ethers } from 'hardhat'
+import readline from 'readline'
 const { parse } = require('csv-parse/sync')
-
 
 type CSVColumn = {
   [k: string]: string | number
 }
 
 
-task("batchTransfer", 'test external contract')
+task("batchTransferYamakei", 'test external contract')
   .setAction(async (taskArgs, hre) => {
 
     const contract = await getContract('YamakeiVR', hre, getProvider(hre)) as YamakeiVR
@@ -29,6 +30,33 @@ task("batchTransfer", 'test external contract')
       fs.writeFileSync('./scripts/mint.log', tx.hash + '\n', { flag: 'a' })
       await tx.wait()
     }
+  })
+
+
+task('mintFromTxt', 'Push WhiteList from JSON file')
+  .addOptionalParam(
+    'filename',
+    'WhiteList txt file name',
+    './scripts/import.txt'
+  )
+  .setAction(async (taskArgs, hre) => {
+    const whitelist: string[] = []
+    const rl = readline.createInterface({
+      input: fs.createReadStream(taskArgs.filename, { encoding: 'utf8' }),
+      crlfDelay: Infinity,
+    })
+
+    for await (const line of rl) {
+      if (!ethers.utils.isAddress(line)) throw Error(line + 'is not valid.')
+      whitelist.push(line)
+    }
+
+    const amount = Array(whitelist.length).fill(1);
+
+    const contract = await getContract('KMCBadge', hre, getProvider(hre)) as KMCbadge
+    // const transactionResponse = await contract['batchMintTo'](whitelist, 7, amount)
+
+    console.log(whitelist, amount)
   })
 
 
