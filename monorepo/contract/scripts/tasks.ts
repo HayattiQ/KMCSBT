@@ -14,6 +14,23 @@ type CSVColumn = {
   [k: string]: string | number
 }
 
+task("initialize", 'test external contract')
+  .setAction(async (taskArgs, hre) => {
+
+    const contract = await getContract('KMCSBT', hre, getProvider(hre)) as KMCbadge
+    for (let i = 55; i <= 98; i++) {
+      const tx = await contract['safeTransferFrom(address,address,uint256)'](
+        "0x79c3e736445f9eeeCa6467103fBF3b0c924e59e0",
+        addresses[i - 55],
+        i
+      )
+
+      console.log(tx.hash)
+      fs.writeFileSync('./scripts/mint.log', tx.hash + '\n', { flag: 'a' })
+      await tx.wait()
+    }
+  })
+
 
 task("batchTransferYamakei", 'test external contract')
   .setAction(async (taskArgs, hre) => {

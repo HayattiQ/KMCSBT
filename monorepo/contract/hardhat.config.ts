@@ -2,7 +2,7 @@
 import 'dotenv/config'
 import type { HardhatUserConfig } from 'hardhat/config'
 import { getEnvVariable } from './scripts/helpers'
-import './scripts/tasks'
+// import './scripts/tasks'
 import "@nomicfoundation/hardhat-toolbox";
 
 const config: HardhatUserConfig = {
