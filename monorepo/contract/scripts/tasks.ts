@@ -17,8 +17,8 @@ task("initialize", 'test external contract')
   .setAction(async (taskArgs, hre) => {
     let tx;
     const contract = await getContract('KMCbadge', hre, getProvider(hre)) as KMCbadge
-    //tx = await contract.setBaseURI("ar://THns9cpLvJ6umzfx1jVZipcAVpkSI4zTk3SD8-bhFIw/", { gasPrice: 80000000000, gasLimit: 800000 })
-    //console.log(tx.hash)
+    // tx = await contract.setBaseURI("ar://THns9cpLvJ6umzfx1jVZipcAVpkSI4zTk3SD8-bhFIw/", { gasPrice: 80000000000, gasLimit: 800000 })
+    // console.log(tx.hash)
     tx = await contract.initializeSBT(8, "8.json", { gasPrice: 80000000000, gasLimit: 800000 })
     console.log(tx.hash)
     tx = await contract.initializeSBT(9, "9.json", { gasPrice: 80000000000, gasLimit: 800000 })
@@ -64,8 +64,9 @@ task('mintFromTxt', 'Push WhiteList from JSON file')
 
     const amount = Array(whitelist.length).fill(1);
 
-    const contract = await getContract('KMCBadge', hre, getProvider(hre)) as KMCbadge
-    // const transactionResponse = await contract['batchMintTo'](whitelist, 7, amount)
+    const contract = await getContract('KMCbadge', hre, getProvider(hre)) as KMCbadge
+    const tx = await contract['batchMintTo'](whitelist, 9, amount, { gasPrice: 50000000000, gasLimit: 8000009 })
+    console.log(tx.hash)
 
     console.log(whitelist, amount)
   })
