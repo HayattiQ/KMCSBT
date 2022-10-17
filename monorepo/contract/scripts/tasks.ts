@@ -65,7 +65,7 @@ task('mintFromTxt', 'Push WhiteList from JSON file')
     const amount = Array(whitelist.length).fill(1);
 
     const contract = await getContract('KMCbadge', hre, getProvider(hre)) as KMCbadge
-    const tx = await contract['batchMintTo'](whitelist, 9, amount, { gasPrice: 50000000000, gasLimit: 8000009 })
+    const tx = await contract['batchMintTo'](whitelist, 10, amount, { gasPrice: 50000000000, gasLimit: 8000009 })
     console.log(tx.hash)
 
     console.log(whitelist, amount)
