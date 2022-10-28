@@ -105,3 +105,4 @@ generate/thumbnail/
 generate/assets/
 # Local Netlify folder
 .netlify
+wallet.json
