@@ -29,7 +29,8 @@
     { "name": "glasses", "order": 17 },
     { "name": "water", "order": 18 },
     { "name": "water back", "order": 19, "json": false },
-    { "name": "hands", "order": 20 },
-    { "name": "special2", "order": 21 }
+    { "name": "water top", "order": 20, "json": false },
+    { "name": "special2", "order": 21 },
+    { "name": "hands", "order": 20 }
   ]
 }
