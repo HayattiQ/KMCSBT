@@ -3,7 +3,7 @@
   "output_dir": "output/",
   "json_dir": "json/",
   "thumbnail_dir": "thumbnail/",
-  "csv_file_name": "metadata.csv",
+  "csv_file_name": "metadata_1st.csv",
   "max_image_generate": 10000,
   "thumbnail": {
     "width": 600,
@@ -30,7 +30,7 @@
     { "name": "water", "order": 18 },
     { "name": "water back", "order": 19, "json": false },
     { "name": "water top", "order": 20, "json": false },
-    { "name": "special2", "order": 21 },
-    { "name": "hands", "order": 22 }
+    { "name": "hands", "order": 21 },
+    { "name": "special2", "order": 22 }
   ]
 }

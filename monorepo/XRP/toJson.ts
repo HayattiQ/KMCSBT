@@ -81,9 +81,7 @@ function main(options: JsonOptionValues) {
 }
 
 function convertMetaData(rec: CSVRecord): OpenSeaMetaData {
-  if (!rec.name || !rec.description) {
-    throw new Error('name or description is null')
-  }
+
   const metadata: OpenSeaMetaData = {
     name: rec.name,
     description: rec.description,
