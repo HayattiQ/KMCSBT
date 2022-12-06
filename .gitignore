@@ -106,3 +106,5 @@ generate/assets/
 # Local Netlify folder
 .netlify
 wallet.json
+
+monorepo/XRP/package/images

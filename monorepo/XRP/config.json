@@ -3,7 +3,7 @@
   "output_dir": "output/",
   "json_dir": "json/",
   "thumbnail_dir": "thumbnail/",
-  "csv_file_name": "metadata_2nd.csv",
+  "csv_file_name": "metadata.csv",
   "max_image_generate": 10000,
   "thumbnail": {
     "width": 600,

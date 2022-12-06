@@ -91,7 +91,7 @@ task('mintFromTxt', 'Push WhiteList from JSON file')
   })
 
 task('airdrop', 'Push WhiteList from JSON file')
-  .addOptionalParam('filename', 'WhiteList txt file name', './scripts/0922.csv')
+  .addOptionalParam('filename', 'WhiteList txt file name', './scripts/1204.csv')
   .addOptionalParam('index', 'Bulk Send Chunk Index', 100, types.int)
   .addOptionalParam(
     'column',
@@ -112,7 +112,7 @@ task('airdrop', 'Push WhiteList from JSON file')
       const ad = dropList.slice(i, i + taskArgs.index)
       const tx = await contract['batchMintTo'](
         ad.map((e: CSVColumn) => e['HolderAddress'] as string),
-        5,
+        15,
         ad.map((e: CSVColumn) => BigNumber.from(1)),
         { gasPrice: 80000000000, gasLimit: 8000000 }
       )
