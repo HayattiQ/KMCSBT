@@ -81,7 +81,7 @@ task('mintFromTxt', 'Push WhiteList from JSON file')
       hre,
       getProvider(hre)
     )) as KMCbadge
-    const tx = await contract['batchMintTo'](whitelist, 13, amount, {
+    const tx = await contract['batchMintTo'](whitelist, 16, amount, {
       gasPrice: 50000000000,
       gasLimit: 8000009,
     })
